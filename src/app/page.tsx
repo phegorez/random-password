@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Moon, Sun } from 'lucide-react'
 
 export default function Component() {
@@ -68,11 +68,10 @@ export default function Component() {
   if (!mounted) return null
 
   return (
-    <Card className="flex items-center justify-center bg-background">
-      <div className="max-w-md w-full p-6 bg-card text-card-foreground rounded-lg shadow-md">
-        <div className="flex justify-between items-center mb-4">
-          <h1 className="text-2xl font-bold">Random Password Generator</h1>
-          <Select value={theme} onValueChange={setTheme}>
+      <Card className="w-[350px]">
+        <CardHeader className='flex flex-row justify-center items-center'>
+          <CardTitle>Random Password Generator</CardTitle>
+          <CardDescription><Select value={theme} onValueChange={setTheme}>
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Theme" />
             </SelectTrigger>
@@ -91,73 +90,74 @@ export default function Component() {
               </SelectItem>
               <SelectItem value="system">System</SelectItem>
             </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="password">Generated Password</Label>
-            <div className="flex mt-1">
-              <Input
-                id="password"
-                value={password}
-                readOnly
-                className="flex-grow"
-              />
-              <Button onClick={copyToClipboard} className="ml-2">
-                Copy
-              </Button>
+          </Select></CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Label htmlFor="password">Generated Password</Label>
+              <div className="flex mt-1">
+                <Input
+                  id="password"
+                  value={password}
+                  readOnly
+                  className="flex-grow"
+                />
+                <Button onClick={copyToClipboard} className="ml-2">
+                  Copy
+                </Button>
+              </div>
             </div>
+            <div>
+              <Label>Password Length: {length}</Label>
+              <Slider
+                value={[length]}
+                onValueChange={(value) => setLength(value[0])}
+                min={6}
+                max={30}
+                step={1}
+                className="mt-1"
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="uppercase"
+                  checked={includeUppercase}
+                  onCheckedChange={() => setIncludeUppercase(prev => prev = !includeUppercase)}
+                />
+                <Label htmlFor="uppercase">Include Uppercase</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="lowercase"
+                  checked={includeLowercase}
+                  onCheckedChange={() => setIncludeLowercase(prev => prev = !includeLowercase)}
+                />
+                <Label htmlFor="lowercase">Include Lowercase</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="numbers"
+                  checked={includeNumbers}
+                  onCheckedChange={() => setIncludeNumbers(prev => prev = !includeNumbers)}
+                />
+                <Label htmlFor="numbers">Include Numbers</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="symbols"
+                  checked={includeSymbols}
+                  onCheckedChange={() => setIncludeSymbols(prev => prev = !includeSymbols)}
+                />
+                <Label htmlFor="symbols">Include Symbols</Label>
+              </div>
+            </div>
+            <Button onClick={generatePassword} className="w-full">
+              Generate Password
+            </Button>
           </div>
-          <div>
-            <Label>Password Length: {length}</Label>
-            <Slider
-              value={[length]}
-              onValueChange={(value) => setLength(value[0])}
-              min={6}
-              max={30}
-              step={1}
-              className="mt-1"
-            />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="uppercase"
-                checked={includeUppercase}
-                onCheckedChange={() => setIncludeUppercase(prev => prev = !includeUppercase )}
-              />
-              <Label htmlFor="uppercase">Include Uppercase</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="lowercase"
-                checked={includeLowercase}
-                onCheckedChange={() => setIncludeLowercase(prev => prev = !includeLowercase )}
-              />
-              <Label htmlFor="lowercase">Include Lowercase</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="numbers"
-                checked={includeNumbers}
-                onCheckedChange={() => setIncludeNumbers(prev => prev = !includeNumbers )}
-              />
-              <Label htmlFor="numbers">Include Numbers</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="symbols"
-                checked={includeSymbols}
-                onCheckedChange={() => setIncludeSymbols(prev => prev = !includeSymbols )}
-              />
-              <Label htmlFor="symbols">Include Symbols</Label>
-            </div>
-          </div>
-          <Button onClick={generatePassword} className="w-full">
-            Generate Password
-          </Button>
-        </div>
-      </div>
-    </Card>
+        </CardContent>
+      </Card>
   )
 }
